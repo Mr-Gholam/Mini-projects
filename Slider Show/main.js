@@ -35,10 +35,14 @@ for (let index = 0; index < slides.length; index++) {
         img.style.borderRadius = 'inherit'
         background.appendChild(img)
         btn.appendChild(background)
+        btn.style.opacity = "1"
+        btn.style.backgroundColor = "background-color: rgba(25, 55, 63, 1);"
     }
 
     btn.onmouseleave = () => {
         btn.removeChild(btn.childNodes[1])
+        btn.style.opacity = "0.8"
+        btn.style.backgroundColor = "background-color: rgba(25, 55, 63, 0.7);"
     }
 
 }
@@ -49,17 +53,20 @@ function increaseSlide(index) {
     const currentSlide = document.querySelector(`[data-index="${currentIndex}"]`),
         nextSlide = document.querySelector(`[data-index="${nextIndex}"]`)
 
+    nextSlide.style.transition = "none"
     nextSlide.style.transform = "translate(-100vw,0)"
 
-    currentSlide.animate({ transform: 'translate(100vw, 0)' }, { duration: 500, easing: 'ease-out' })
-    nextSlide.animate({ transform: 'translate(0, 0)' }, { duration: 400, easing: 'ease-out' })
+    currentSlide.style.transform = "translate(100vw,0)"
+    nextSlide.style.transition = "all 400ms cubic-bezier(0.84, 0.44, 0.59, 0.98)"
+    nextSlide.style.transform = "translate(0,0)"
+
 
     setTimeout(() => {
         currentSlide.dataset.status = 'inactive'
         nextSlide.dataset.status = 'active'
-    }, 390)
+        currentIndex = nextIndex
+    }, 350)
 
-    currentIndex = nextIndex
 }
 function decreaseSlide(index) {
     const previousIndex = index != null ? index : currentIndex == 0 ? slides.length - 1 : currentIndex - 1
@@ -68,16 +75,18 @@ function decreaseSlide(index) {
         previousSlide = document.querySelector(`[data-index="${previousIndex}"]`)
 
 
+    previousSlide.style.transition = "none"
     previousSlide.style.transform = "translate(100vw,0)"
 
-    currentSlide.animate({ transform: 'translate(-100vw, 0)' }, { duration: 550, easing: 'cubic-bezier(.84,.44,.59,.98)' })
+    currentSlide.style.transform = "translate(-100vw,0)"
+    previousSlide.style.transition = "all 400ms cubic-bezier(0.84, 0.44, 0.59, 0.98)"
+    previousSlide.style.transform = "translate(0,0)"
 
-    previousSlide.animate({ transform: 'translate(0, 0)' }, { duration: 550, easing: 'cubic-bezier(.36,1.01,.6,1)' })
 
     setTimeout(() => {
         currentSlide.dataset.status = 'inactive'
         previousSlide.dataset.status = 'active'
-    }, 500)
+        currentIndex = previousIndex
+    }, 400)
 
-    currentIndex = previousIndex
 }
