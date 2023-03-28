@@ -3,6 +3,8 @@ const rightBtn = document.querySelector('.right'),
     slides = document.querySelectorAll('.slide'),
     radioBtns = document.querySelector('.radioBtns')
 
+
+
 let currentIndex = 0
 rightBtn.addEventListener('click', () => increaseSlide())
 
@@ -11,7 +13,13 @@ leftBtn.addEventListener('click', () => decreaseSlide())
 for (let index = 0; index < slides.length; index++) {
     const btn = document.createElement('button')
     btn.innerText = index + 1
+    btn.dataset.index = `${index}`
     btn.classList.add('radioBtn')
+    if (index == 0) {
+        btn.dataset.status = "active"
+    } else {
+        btn.dataset.status = "inactive"
+    }
     radioBtns.appendChild(btn)
     btn.addEventListener('click', () => {
         const status = index > currentIndex ? -1 : index < currentIndex ? 1 : 0
@@ -35,14 +43,12 @@ for (let index = 0; index < slides.length; index++) {
         img.style.borderRadius = 'inherit'
         background.appendChild(img)
         btn.appendChild(background)
-        btn.style.opacity = "1"
-        btn.style.backgroundColor = "background-color: rgba(25, 55, 63, 1);"
+        btn.style.border = "1px solid white"
     }
 
     btn.onmouseleave = () => {
         btn.removeChild(btn.childNodes[1])
-        btn.style.opacity = "0.8"
-        btn.style.backgroundColor = "background-color: rgba(25, 55, 63, 0.7);"
+        btn.style.border = "0px solid white"
     }
 
 }
@@ -51,7 +57,9 @@ function increaseSlide(index) {
     const nextIndex = index != null ? index : currentIndex < slides.length - 1 ? currentIndex + 1 : 0
 
     const currentSlide = document.querySelector(`[data-index="${currentIndex}"]`),
-        nextSlide = document.querySelector(`[data-index="${nextIndex}"]`)
+        currentRadioBtn = document.querySelector(`.radioBtn[data-index="${currentIndex}"]`),
+        nextSlide = document.querySelector(`[data-index="${nextIndex}"]`),
+        nextRadioBtn = document.querySelector(`.radioBtn[data-index="${nextIndex}"]`)
 
     nextSlide.style.transition = "none"
     nextSlide.style.transform = "translate(-100vw,0)"
@@ -63,7 +71,9 @@ function increaseSlide(index) {
 
     setTimeout(() => {
         currentSlide.dataset.status = 'inactive'
+        currentRadioBtn.dataset.status = 'inactive'
         nextSlide.dataset.status = 'active'
+        nextRadioBtn.dataset.status = 'active'
         currentIndex = nextIndex
     }, 350)
 
@@ -72,7 +82,9 @@ function decreaseSlide(index) {
     const previousIndex = index != null ? index : currentIndex == 0 ? slides.length - 1 : currentIndex - 1
 
     const currentSlide = document.querySelector(`[data-index="${currentIndex}"]`),
-        previousSlide = document.querySelector(`[data-index="${previousIndex}"]`)
+        currentRadioBtn = document.querySelector(`.radioBtn[data-index="${currentIndex}"]`),
+        previousSlide = document.querySelector(`[data-index="${previousIndex}"]`),
+        previousRadioBtn = document.querySelector(`.radioBtn[data-index="${previousIndex}"]`)
 
 
     previousSlide.style.transition = "none"
@@ -85,8 +97,10 @@ function decreaseSlide(index) {
 
     setTimeout(() => {
         currentSlide.dataset.status = 'inactive'
+        currentRadioBtn.dataset.status = 'inactive'
         previousSlide.dataset.status = 'active'
+        previousRadioBtn.dataset.status = 'active'
         currentIndex = previousIndex
-    }, 400)
+    }, 350)
 
 }
